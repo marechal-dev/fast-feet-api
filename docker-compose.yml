@@ -1,0 +1,46 @@
+volumes:
+  cache_data:
+    driver: local
+  db-data:
+    driver: local
+
+services:
+  database:
+    image: bitnami/postgresql:17.2.0
+    container_name: 'fast-feet-api-db'
+    restart: always
+    profiles:
+      - 'dev'
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=fast_feet
+    volumes:
+      - 'db-data:/bitnami/postgresql'
+
+  cache:
+    image: redis
+    container_name: 'fast-feet-api-cache'
+    profiles:
+      - 'dev'
+    ports:
+      - 6379:6379
+    volumes:
+      - 'cache_data:/data'
+
+  dev:
+    container_name: 'fast-feet-api-dev'
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    profiles:
+      - 'dev'
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+      - queue
+    volumes:
+      - .:/usr/app
