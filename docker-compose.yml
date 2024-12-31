@@ -9,8 +9,6 @@ services:
     image: bitnami/postgresql:17.2.0
     container_name: 'fast-feet-api-db'
     restart: always
-    profiles:
-      - 'dev'
     ports:
       - 5432:5432
     environment:
@@ -23,24 +21,18 @@ services:
   cache:
     image: redis
     container_name: 'fast-feet-api-cache'
-    profiles:
-      - 'dev'
     ports:
       - 6379:6379
     volumes:
       - 'cache_data:/data'
 
-  dev:
+  api-dev:
     container_name: 'fast-feet-api-dev'
-    build:
-      context: .
-      dockerfile: dev.Dockerfile
-    profiles:
-      - 'dev'
+    build: .
     ports:
       - 3000:3000
     depends_on:
       - database
-      - queue
+      - cache
     volumes:
       - .:/usr/app

@@ -2,7 +2,7 @@ FROM node:lts-alpine
 
 RUN apk add musl
 
-ENV NODE_ENV development
+ENV NODE_ENV=development
 
 WORKDIR /usr/app
 
