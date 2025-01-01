@@ -26,5 +26,5 @@ export function setupSwagger(app: NestFastifyApplication) {
 
 	const document = SwaggerModule.createDocument(app, config);
 
-	SwaggerModule.setup('api/docs', app, document);
+	SwaggerModule.setup('docs', app, document);
 }
