@@ -1,12 +1,12 @@
 import { env } from '@Config/env';
 import {
-	ArgumentsHost,
+	type ArgumentsHost,
 	Catch,
-	ExceptionFilter,
+	type ExceptionFilter,
 	HttpStatus,
 	Logger,
 } from '@nestjs/common';
-import { FastifyReply } from 'fastify';
+import type { FastifyReply } from 'fastify';
 import { ZodValidationException } from 'nestjs-zod';
 import { fromZodError } from 'zod-validation-error';
 

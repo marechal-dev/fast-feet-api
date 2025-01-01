@@ -1,3 +1,3 @@
-export interface ApplicationException {
+export interface IApplicationException {
 	message: string;
 }

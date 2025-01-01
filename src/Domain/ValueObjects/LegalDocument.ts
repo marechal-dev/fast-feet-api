@@ -1,5 +1,5 @@
 import { ValueObject } from '@Core/Entities/ValueObject';
-import { Either, left, right } from '@Core/Primitives/Either';
+import { type Either, left, right } from '@Core/Primitives/Either';
 import { InvalidDocumentException } from '@Domain/Exceptions/InvalidDocumentException';
 
 export type LegalDocumentProps = {
@@ -33,7 +33,7 @@ export class LegalDocument extends ValueObject<LegalDocumentProps> {
 		super(props);
 	}
 
-	public get Value() {
+	public get value() {
 		return this.props.value;
 	}
 

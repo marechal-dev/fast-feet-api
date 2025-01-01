@@ -1,6 +1,9 @@
-import { DomainException } from '@Core/Exceptions/DomainException';
+import type { IDomainException } from '@Core/Exceptions/DomainException';
 
-export class InvalidDocumentException extends Error implements DomainException {
+export class InvalidDocumentException
+	extends Error
+	implements IDomainException
+{
 	public constructor(document?: string | null) {
 		let documentString = document;
 

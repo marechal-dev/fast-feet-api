@@ -1,90 +1,94 @@
-import { AggregateRoot } from '../Entities/AggregateRoot';
-import { UniqueEntityID } from '../Entities/UniqueEntityID';
+import type { AggregateRoot } from '../Entities/AggregateRoot';
+import type { UniqueEntityID } from '../Entities/UniqueEntityID';
 
-import { DomainEvent } from './DomainEvent';
+import type { IDomainEvent } from './DomainEvent';
 
 type DomainEventCallback = (event: unknown) => void;
 
 export class DomainEvents {
-  private static handlersMap: Record<string, DomainEventCallback[]> = {};
-  private static markedAggregates: AggregateRoot<unknown>[] = [];
+	private static handlersMap: Record<string, DomainEventCallback[]> = {};
+	private static markedAggregates: AggregateRoot<unknown>[] = [];
 
-  public static shouldRun = true;
+	public static shouldRun = true;
 
-  public static markAggregateForDispatch(aggregate: AggregateRoot<unknown>) {
-    const aggregateFound = !!this.findMarkedAggregateByID(aggregate.id);
+	public static markAggregateForDispatch(aggregate: AggregateRoot<unknown>) {
+		const aggregateFound = !!DomainEvents.findMarkedAggregateByID(aggregate.id);
 
-    if (!aggregateFound) {
-      this.markedAggregates.push(aggregate);
-    }
-  }
+		if (!aggregateFound) {
+			DomainEvents.markedAggregates.push(aggregate);
+		}
+	}
 
-  private static dispatchAggregateEvents(aggregate: AggregateRoot<unknown>) {
-    aggregate.domainEvents.forEach((event: DomainEvent) =>
-      this.dispatch(event),
-    );
-  }
+	private static dispatchAggregateEvents(aggregate: AggregateRoot<unknown>) {
+		for (const domainEvent of aggregate.domainEvents) {
+			DomainEvents.dispatch(domainEvent);
+		}
+	}
 
-  private static removeAggregateFromMarkedDispatchList(
-    aggregate: AggregateRoot<unknown>,
-  ) {
-    const index = this.markedAggregates.findIndex((a) => a.equals(aggregate));
+	private static removeAggregateFromMarkedDispatchList(
+		aggregate: AggregateRoot<unknown>,
+	) {
+		const index = DomainEvents.markedAggregates.findIndex((a) =>
+			a.equals(aggregate),
+		);
 
-    this.markedAggregates.splice(index, 1);
-  }
+		DomainEvents.markedAggregates.splice(index, 1);
+	}
 
-  private static findMarkedAggregateByID(
-    id: UniqueEntityID,
-  ): AggregateRoot<unknown> | undefined {
-    return this.markedAggregates.find((aggregate) => aggregate.id.equals(id));
-  }
+	private static findMarkedAggregateByID(
+		id: UniqueEntityID,
+	): AggregateRoot<unknown> | undefined {
+		return DomainEvents.markedAggregates.find((aggregate) =>
+			aggregate.id.equals(id),
+		);
+	}
 
-  public static dispatchEventsForAggregate(id: UniqueEntityID) {
-    const aggregate = this.findMarkedAggregateByID(id);
+	public static dispatchEventsForAggregate(id: UniqueEntityID) {
+		const aggregate = DomainEvents.findMarkedAggregateByID(id);
 
-    if (aggregate) {
-      this.dispatchAggregateEvents(aggregate);
-      aggregate.clearEvents();
-      this.removeAggregateFromMarkedDispatchList(aggregate);
-    }
-  }
+		if (aggregate) {
+			DomainEvents.dispatchAggregateEvents(aggregate);
+			aggregate.clearEvents();
+			DomainEvents.removeAggregateFromMarkedDispatchList(aggregate);
+		}
+	}
 
-  public static register(
-    callback: DomainEventCallback,
-    eventClassName: string,
-  ) {
-    const wasEventRegisteredBefore = eventClassName in this.handlersMap;
+	public static register(
+		callback: DomainEventCallback,
+		eventClassName: string,
+	) {
+		const wasEventRegisteredBefore = eventClassName in DomainEvents.handlersMap;
 
-    if (!wasEventRegisteredBefore) {
-      this.handlersMap[eventClassName] = [];
-    }
+		if (!wasEventRegisteredBefore) {
+			DomainEvents.handlersMap[eventClassName] = [];
+		}
 
-    this.handlersMap[eventClassName].push(callback);
-  }
+		DomainEvents.handlersMap[eventClassName].push(callback);
+	}
 
-  public static clearHandlers() {
-    this.handlersMap = {};
-  }
+	public static clearHandlers() {
+		DomainEvents.handlersMap = {};
+	}
 
-  public static clearMarkedAggregates() {
-    this.markedAggregates = [];
-  }
+	public static clearMarkedAggregates() {
+		DomainEvents.markedAggregates = [];
+	}
 
-  private static dispatch(event: DomainEvent) {
-    if (!this.shouldRun) {
-      return;
-    }
+	private static dispatch(event: IDomainEvent) {
+		if (!DomainEvents.shouldRun) {
+			return;
+		}
 
-    const eventClassName: string = event.constructor.name;
+		const eventClassName: string = event.constructor.name;
 
-    const isEventRegistered = eventClassName in this.handlersMap;
+		const isEventRegistered = eventClassName in DomainEvents.handlersMap;
 
-    if (isEventRegistered) {
-      const handlers = this.handlersMap[eventClassName];
+		if (isEventRegistered) {
+			const handlers = DomainEvents.handlersMap[eventClassName];
 
-      for (const handler of handlers) {
-        handler(event);
-      }
-    }
-  }
+			for (const handler of handlers) {
+				handler(event);
+			}
+		}
+	}
 }

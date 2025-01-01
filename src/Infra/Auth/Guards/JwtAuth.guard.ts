@@ -1,13 +1,13 @@
 import { env } from '@Config/env';
 import {
-	CanActivate,
-	ExecutionContext,
+	type CanActivate,
+	type ExecutionContext,
 	Injectable,
 	UnauthorizedException,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { JwtService } from '@nestjs/jwt';
-import { FastifyRequest } from 'fastify';
+import type { Reflector } from '@nestjs/core';
+import type { JwtService } from '@nestjs/jwt';
+import type { FastifyRequest } from 'fastify';
 
 import { IS_PUBLIC_KEY } from '../Decorators/IsPublicRoute.decorator';
 

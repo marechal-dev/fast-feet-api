@@ -1,5 +1,5 @@
 import { env } from '@Config/env';
-import { Injectable, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, type OnModuleDestroy } from '@nestjs/common';
 import { Redis } from 'ioredis';
 
 @Injectable()

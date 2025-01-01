@@ -13,9 +13,6 @@
 		"enabled": true,
 		"useEditorconfig": true,
 		"formatWithErrors": false,
-		"indentStyle": "tab",
-		"indentWidth": 2,
-		"lineEnding": "crlf",
 		"lineWidth": 80,
 		"attributePosition": "auto",
 		"bracketSpacing": true
@@ -30,31 +27,83 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": false,
+			"recommended": true,
 			"complexity": {
 				"noUselessThisAlias": "error",
 				"noUselessTypeConstraint": "error",
-				"useArrowFunction": "off"
+				"useArrowFunction": "off",
+				"noThisInStatic": "error",
+				"useDateNow": "error",
+				"useFlatMap": "error",
+				"useOptionalChain": "error",
+				"useSimplifiedLogicExpression": "error",
+				"useRegexLiterals": "error",
+				"noStaticOnlyClass": "off"
 			},
 			"correctness": {
 				"noUnusedVariables": "error",
-				"useArrayLiterals": "off"
+				"useArrayLiterals": "error",
+				"noInvalidNewBuiltin": "error",
+				"noStringCaseMismatch": "error"
 			},
 			"style": {
 				"noNamespace": "error",
 				"useAsConstAssertion": "error",
-				"useBlockStatements": "off"
+				"useBlockStatements": "error",
+				"useShorthandArrayType": "error",
+				"useExponentiationOperator": "error",
+				"useDefaultParameterLast": "error",
+				"useDefaultSwitchClause": "error",
+				"useEnumInitializers": "error",
+				"useNumberNamespace": "error",
+				"useNodejsImportProtocol": "error",
+				"useThrowOnlyError": "error",
+				"useNamingConvention": {
+					"level": "error",
+					"options": {
+						"strictCase": false,
+						"requireAscii": true,
+						"enumMemberCase": "PascalCase",
+						"conventions": [
+							{
+								"selector": {
+									"kind": "objectLiteralProperty"
+								},
+								"formats": [
+									"camelCase",
+									"PascalCase",
+									"snake_case",
+									"CONSTANT_CASE"
+								]
+							},
+							{
+								"selector": {
+									"kind": "interface"
+								},
+								"match": "I(.*)|(.*?)Error",
+								"formats": [
+									"PascalCase"
+								]
+							}
+						]
+					}
+				}
 			},
 			"suspicious": {
 				"noExplicitAny": "off",
 				"noExtraNonNullAssertion": "error",
 				"noMisleadingInstantiator": "error",
 				"noUnsafeDeclarationMerging": "error",
+				"noDoubleEquals": "error",
+				"useAwait": "error",
 				"useNamespaceKeyword": "error"
 			}
 		},
 		"ignore": [
-			"**/.eslintrc.js"
+			"**/.eslintrc.js",
+			"**/*.yml",
+			"**/Dockerfile",
+			"**/.env*"
 		]
 	},
 	"javascript": {
@@ -72,45 +121,5 @@
 			"attributePosition": "auto",
 			"bracketSpacing": true
 		}
-	},
-	"overrides": [
-		{
-			"include": [
-				"*.ts",
-				"*.mts",
-				"*.cts"
-			],
-			"linter": {
-				"rules": {
-					"correctness": {
-						"noConstAssign": "off",
-						"noGlobalObjectCalls": "off",
-						"noInvalidBuiltinInstantiation": "off",
-						"noInvalidConstructorSuper": "off",
-						"noNewSymbol": "off",
-						"noSetterReturn": "off",
-						"noUndeclaredVariables": "off",
-						"noUnreachable": "off",
-						"noUnreachableSuper": "off"
-					},
-					"style": {
-						"noArguments": "error",
-						"noVar": "error",
-						"useConst": "error"
-					},
-					"suspicious": {
-						"noClassAssign": "off",
-						"noDuplicateClassMembers": "off",
-						"noDuplicateObjectKeys": "off",
-						"noDuplicateParameters": "off",
-						"noFunctionAssign": "off",
-						"noImportAssign": "off",
-						"noRedeclare": "off",
-						"noUnsafeNegation": "off",
-						"useGetterReturn": "off"
-					}
-				}
-			}
-		}
-	]
+	}
 }

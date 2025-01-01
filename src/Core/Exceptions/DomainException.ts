@@ -1,3 +1,3 @@
-export interface DomainException {
+export interface IDomainException {
 	message: string;
 }

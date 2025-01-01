@@ -5,12 +5,12 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 
+import { setupSwagger } from '@Config/Development/Swagger';
 import { env } from '@Config/env';
 import { ZodValidationExceptionFilter } from '@Infra/ExceptionFilters/ZodValidationException.filter';
-import { setupSwagger } from '@Config/Development/Swagger';
 
 async function bootstrap() {
-	const APP_HOST = '0.0.0.0';
+	const appHost = '0.0.0.0';
 
 	const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
@@ -24,7 +24,7 @@ async function bootstrap() {
 		setupSwagger(app);
 	}
 
-	await app.listen(env.PORT, APP_HOST);
+	await app.listen(env.PORT, appHost);
 }
 
 bootstrap();

@@ -12,6 +12,7 @@ declare global {
 }
 
 declare module 'fastify' {
+	// biome-ignore lint/style/useNamingConvention: Defined on Fastify
 	export interface FastifyRequest {
 		user?: UserPayload;
 	}
