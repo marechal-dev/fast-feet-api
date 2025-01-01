@@ -44,7 +44,9 @@
 				"noUnusedVariables": "error",
 				"useArrayLiterals": "error",
 				"noInvalidNewBuiltin": "error",
-				"noStringCaseMismatch": "error"
+				"noStringCaseMismatch": "error",
+				"noUnusedImports": "error",
+				"noUnusedFunctionParameters": "error"
 			},
 			"style": {
 				"noNamespace": "error",
